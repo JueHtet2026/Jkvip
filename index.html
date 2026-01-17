@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Firebase Users Management</title>
+    <title>OK VIP Users</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -16,301 +16,413 @@
         }
 
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: #f5f7fa;
             min-height: 100vh;
             padding: 15px;
             color: #333;
+            font-size: 14px;
         }
 
         .container {
             max-width: 100%;
             margin: 0 auto;
-        }
-
-        /* Phone Optimized Header */
-        .phone-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 20px;
-            padding: 25px 20px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            color: white;
-            position: relative;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
             overflow: hidden;
         }
 
-        .phone-header::before {
-            content: '';
+        /* Compact Header */
+        .compact-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 15px;
+            text-align: center;
+        }
+
+        .title-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .logo-small {
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-small i {
+            font-size: 16px;
+            color: white;
+        }
+
+        .compact-title {
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .title-lines {
+            text-align: left;
+        }
+
+        .title-line {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .subtitle-small {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        /* Compact Stats - Inline */
+        .compact-stats {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 15px 0;
+            padding: 0 15px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 70px;
+        }
+
+        .stat-value-small {
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .stat-label-small {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.9);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .total-stat .stat-value-small { color: #fff; }
+        .active-stat .stat-value-small { color: #4ade80; }
+        .inactive-stat .stat-value-small { color: #f87171; }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 15px 20px;
+        }
+
+        /* Main Content - Compact */
+        .compact-content {
+            padding: 20px 15px;
+        }
+
+        /* Search Box - Compact */
+        .search-container-small {
+            margin-bottom: 20px;
+        }
+
+        .search-box-small {
+            position: relative;
+        }
+
+        .search-box-small i {
             position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #667eea;
+            font-size: 16px;
+        }
+
+        .search-box-small input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 14px;
+            background: #f8fafc;
+        }
+
+        .search-box-small input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+        }
+
+        /* Users List - Compact */
+        .compact-users-list {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .user-item {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-left: 4px solid #667eea;
+            transition: all 0.2s;
+        }
+
+        .user-item:hover {
+            background: #f1f5f9;
+            transform: translateX(3px);
+        }
+
+        .user-item.active {
+            border-left-color: #4ade80;
+            background: #f0fdf4;
+        }
+
+        .user-item.inactive {
+            border-left-color: #f87171;
+            background: #fef2f2;
+        }
+
+        .user-header-small {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 15px;
+        }
+
+        .user-status-small {
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-active-small {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .status-inactive-small {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .user-details-small {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 13px;
+        }
+
+        .detail-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #64748b;
+        }
+
+        .detail-row i {
+            color: #667eea;
+            font-size: 14px;
+            width: 16px;
+            text-align: center;
+        }
+
+        .detail-label {
+            font-weight: 500;
+            color: #475569;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        /* Add Button - Compact */
+        .btn-add-small {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-add-small:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        /* Empty State - Compact */
+        .empty-state-small {
+            text-align: center;
+            padding: 40px 20px;
+            color: #94a3b8;
+        }
+
+        .empty-state-small i {
+            font-size: 40px;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .empty-state-small h3 {
+            font-size: 16px;
+            color: #475569;
+            margin-bottom: 8px;
+        }
+
+        /* Form - Compact */
+        .form-overlay {
+            position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(5px);
-        }
-
-        .header-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .header-row {
-            display: flex;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
             align-items: center;
-            justify-content: space-between;
-            margin-bottom: 15px;
+            justify-content: center;
+            padding: 20px;
+            z-index: 1000;
         }
 
-        .logo-icon {
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 255, 255, 0.2);
+        .form-modal {
+            background: white;
             border-radius: 15px;
+            width: 100%;
+            max-width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-header-small {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .form-header-small h3 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .btn-close {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
         }
 
-        .logo-icon i {
-            font-size: 28px;
-            color: white;
-        }
-
-        .header-title {
-            flex: 1;
-            margin-left: 20px;
-        }
-
-        .main-title {
-            font-size: 28px;
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 5px;
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        .title-lines {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .title-line {
-            font-size: 22px;
-            font-weight: 600;
-            line-height: 1.3;
-        }
-
-        .subtitle {
-            font-size: 15px;
-            opacity: 0.9;
-            line-height: 1.5;
-            font-weight: 400;
-        }
-
-        /* Phone Optimized Stats */
-        .stats-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 25px 20px;
-            border-radius: 20px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-            transition: transform 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-3px);
-        }
-
-        .stat-card.total {
-            border-left: 8px solid #3498db;
-        }
-
-        .stat-card.active {
-            border-left: 8px solid #2ecc71;
-        }
-
-        .stat-card.inactive {
-            border-left: 8px solid #e74c3c;
-        }
-
-        .stat-icon {
-            font-size: 40px;
-            margin-right: 25px;
-            min-width: 60px;
-            text-align: center;
-        }
-
-        .stat-card.total .stat-icon { color: #3498db; }
-        .stat-card.active .stat-icon { color: #2ecc71; }
-        .stat-card.inactive .stat-icon { color: #e74c3c; }
-
-        .stat-content {
-            flex: 1;
-        }
-
-        .stat-title {
-            font-size: 14px;
-            color: #7f8c8d;
-            margin-bottom: 8px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .stat-value {
-            font-size: 42px;
-            font-weight: 800;
-            color: #2c3e50;
-            line-height: 1;
-        }
-
-        /* Main Content for Phone */
-        .main-content {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        /* Form Section - Phone Optimized */
-        .form-section {
-            background: white;
-            padding: 25px 20px;
-            border-radius: 20px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-            display: none;
-        }
-
-        .form-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #f1f1f1;
-        }
-
-        .form-header h2 {
-            font-size: 22px;
-            color: #2c3e50;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .form-header h2 i {
-            color: #3498db;
-        }
-
-        .close-form {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 10px;
-            color: #2c3e50;
-            font-weight: 600;
-            font-size: 15px;
-        }
-
-        .input-with-icon {
-            position: relative;
-        }
-
-        .input-with-icon i {
-            position: absolute;
-            left: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #3498db;
-            font-size: 18px;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 18px 20px 18px 55px;
-            border: 2px solid #e0e0e0;
-            border-radius: 15px;
-            font-size: 16px;
-            background: #f8f9fa;
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: #3498db;
-            background: white;
-        }
-
-        .switch-group {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        .form-body {
             padding: 20px;
-            background: #f8f9fa;
-            border-radius: 15px;
-            border: 2px solid #e0e0e0;
         }
 
-        .switch-label {
-            font-size: 16px;
+        .form-group-small {
+            margin-bottom: 18px;
+        }
+
+        .form-group-small label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
             font-weight: 600;
-            color: #2c3e50;
+            color: #475569;
         }
 
-        .switch {
+        .form-input-small {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #f8fafc;
+        }
+
+        .form-input-small:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+        }
+
+        .switch-group-small {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .switch-small {
             position: relative;
             display: inline-block;
-            width: 68px;
-            height: 38px;
+            width: 50px;
+            height: 28px;
         }
 
-        .switch input {
+        .switch-small input {
             opacity: 0;
             width: 0;
             height: 0;
         }
 
-        .slider {
+        .slider-small {
             position: absolute;
             cursor: pointer;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #ccc;
+            background-color: #cbd5e1;
             transition: .4s;
             border-radius: 34px;
         }
 
-        .slider:before {
+        .slider-small:before {
             position: absolute;
             content: "";
-            height: 30px;
-            width: 30px;
+            height: 20px;
+            width: 20px;
             left: 4px;
             bottom: 4px;
             background-color: white;
@@ -318,441 +430,284 @@
             border-radius: 50%;
         }
 
-        input:checked + .slider {
-            background-color: #2ecc71;
+        input:checked + .slider-small {
+            background-color: #4ade80;
         }
 
-        input:checked + .slider:before {
-            transform: translateX(30px);
+        input:checked + .slider-small:before {
+            transform: translateX(22px);
         }
 
-        .form-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 30px;
+        .form-actions-small {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-top: 25px;
         }
 
-        .btn {
-            padding: 18px;
+        .btn-form-small {
+            padding: 12px;
             border: none;
-            border-radius: 15px;
-            font-size: 16px;
+            border-radius: 8px;
+            font-size: 13px;
             font-weight: 600;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            transition: all 0.3s;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .btn-add {
-            background: #2ecc71;
-            color: white;
-        }
-
-        .btn-update {
-            background: #3498db;
-            color: white;
-        }
-
-        .btn-delete {
-            background: #e74c3c;
-            color: white;
-        }
-
-        .btn:hover {
+        .btn-form-small:hover {
             opacity: 0.9;
-            transform: translateY(-2px);
         }
 
-        /* List Section - Phone Optimized */
-        .list-section {
-            background: white;
-            padding: 25px 20px;
-            border-radius: 20px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .search-container {
-            margin-bottom: 25px;
-        }
-
-        .search-box {
-            position: relative;
-        }
-
-        .search-box i {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #7f8c8d;
-            font-size: 20px;
-        }
-
-        .search-box input {
-            padding-left: 60px;
-            height: 60px;
-            font-size: 16px;
-        }
-
-        .btn-open-form {
-            background: #9b59b6;
+        .btn-add-form {
+            background: #4ade80;
             color: white;
-            width: 100%;
-            padding: 20px;
-            font-size: 17px;
-            margin-bottom: 25px;
         }
 
-        /* Users List - Phone Optimized */
-        .users-list {
-            max-height: 500px;
-            overflow-y: auto;
-            padding-right: 5px;
+        .btn-update-form {
+            background: #667eea;
+            color: white;
         }
 
-        .user-card {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 15px;
-            border-left: 8px solid #3498db;
-            transition: all 0.3s;
+        .btn-delete-form {
+            background: #f87171;
+            color: white;
         }
 
-        .user-card:hover {
-            background: #e8f4fc;
-        }
-
-        .user-card.active {
-            border-left-color: #2ecc71;
-        }
-
-        .user-card.inactive {
-            border-left-color: #e74c3c;
-        }
-
-        .user-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .user-token {
-            font-weight: 700;
-            color: #2c3e50;
-            font-size: 18px;
-        }
-
-        .user-status {
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 700;
-        }
-
-        .status-active {
-            background: #d5f4e6;
-            color: #27ae60;
-        }
-
-        .status-inactive {
-            background: #fadbd8;
-            color: #c0392b;
-        }
-
-        .user-details {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .user-detail {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: #555;
-            font-size: 15px;
-        }
-
-        .user-detail i {
-            color: #3498db;
-            font-size: 18px;
-            width: 25px;
-        }
-
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: #7f8c8d;
-        }
-
-        .empty-state i {
-            font-size: 50px;
-            margin-bottom: 20px;
-            color: #bdc3c7;
-        }
-
-        .empty-state h3 {
-            font-size: 22px;
-            margin-bottom: 10px;
-            color: #2c3e50;
-        }
-
-        /* Notification - Phone Optimized */
-        .notification {
+        /* Notification - Compact */
+        .notification-small {
             position: fixed;
             bottom: 20px;
-            left: 20px;
             right: 20px;
-            padding: 18px 25px;
-            border-radius: 15px;
+            left: 20px;
+            padding: 15px 20px;
+            border-radius: 10px;
             color: white;
+            font-size: 14px;
             font-weight: 600;
-            font-size: 15px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1001;
             transform: translateY(100px);
             opacity: 0;
-            transition: all 0.5s;
+            transition: all 0.3s;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
+            max-width: 400px;
+            margin: 0 auto;
         }
 
-        .notification.show {
+        .notification-small.show {
             transform: translateY(0);
             opacity: 1;
         }
 
-        .notification.success {
-            background: #2ecc71;
+        .notification-small.success {
+            background: #4ade80;
         }
 
-        .notification.error {
-            background: #e74c3c;
+        .notification-small.error {
+            background: #f87171;
         }
 
-        .notification.info {
-            background: #3498db;
+        .notification-small.info {
+            background: #667eea;
         }
 
         /* Loading */
-        .loading {
+        .loading-small {
             text-align: center;
-            padding: 40px;
-            color: #7f8c8d;
+            padding: 30px;
+            color: #94a3b8;
         }
 
-        .loading-spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
+        .loading-spinner-small {
+            border: 3px solid #f1f5f9;
+            border-top: 3px solid #667eea;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+            margin: 0 auto 15px;
         }
 
-        /* Footer - Phone Optimized */
-        footer {
+        /* Footer - Compact */
+        .footer-small {
             text-align: center;
-            margin-top: 40px;
-            padding: 25px 20px;
-            color: #7f8c8d;
-            font-size: 14px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            color: #94a3b8;
+            font-size: 12px;
+            border-top: 1px solid #f1f5f9;
         }
 
-        /* Responsive Adjustments */
-        @media (max-width: 480px) {
-            .phone-header {
-                padding: 20px 15px;
-            }
-            
-            .main-title {
-                font-size: 24px;
-            }
-            
-            .title-line {
-                font-size: 20px;
-            }
-            
-            .stat-value {
-                font-size: 36px;
-            }
-            
-            .stat-icon {
-                font-size: 35px;
-                margin-right: 20px;
-                min-width: 50px;
-            }
-        }
-
-        @media (min-width: 768px) {
-            .container {
-                max-width: 750px;
-            }
-            
-            .stats-container {
-                flex-direction: row;
-            }
-            
-            .stat-card {
-                flex: 1;
-            }
-            
-            .main-content {
-                flex-direction: row;
-            }
-            
-            .form-actions {
-                flex-direction: row;
-            }
+        /* Demo Data Badge */
+        .demo-badge {
+            display: inline-block;
+            background: #fef3c7;
+            color: #92400e;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 10px;
         }
 
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .compact-title {
+                font-size: 20px;
+            }
+            
+            .title-line {
+                font-size: 16px;
+            }
+            
+            .stat-value-small {
+                font-size: 24px;
+            }
+            
+            .compact-stats {
+                gap: 20px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                max-width: 500px;
+                margin: 20px auto;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Phone Optimized Header -->
-        <div class="phone-header">
-            <div class="header-content">
-                <div class="header-row">
-                    <div class="logo-icon">
-                        <i class="fas fa-users-cog"></i>
-                    </div>
-                    <div class="header-title">
-                        <div class="title-lines">
-                            <div class="title-line">Firebase</div>
-                            <div class="title-line">Users</div>
-                            <div class="title-line">Management</div>
-                        </div>
+        <!-- Compact Header -->
+        <div class="compact-header">
+            <div class="title-row">
+                <div class="logo-small">
+                    <i class="fas fa-users-cog"></i>
+                </div>
+                <div class="title-lines">
+                    <div class="compact-title">
+                        <div class="title-line">Firebase</div>
+                        <div class="title-line">Users Manager</div>
                     </div>
                 </div>
-                <p class="subtitle">Manage user data in real-time with Firebase Firestore. Add, edit, and monitor users with an intuitive interface.</p>
             </div>
+            
+            <p class="subtitle-small">Manage VIP users in real-time</p>
+            
+            <!-- Compact Stats - One Row -->
+            <div class="compact-stats">
+                <div class="stat-item total-stat">
+                    <div class="stat-value-small" id="totalUsers">4</div>
+                    <div class="stat-label-small">Total</div>
+                </div>
+                <div class="stat-item active-stat">
+                    <div class="stat-value-small" id="activeUsers">3</div>
+                    <div class="stat-label-small">Active</div>
+                </div>
+                <div class="stat-item inactive-stat">
+                    <div class="stat-value-small" id="inactiveUsers">1</div>
+                    <div class="stat-label-small">Inactive</div>
+                </div>
+            </div>
+            
+            <div class="demo-badge">Demo Data</div>
         </div>
 
-        <!-- Phone Optimized Stats -->
-        <div class="stats-container">
-            <div class="stat-card total">
-                <div class="stat-icon">👥</div>
-                <div class="stat-content">
-                    <div class="stat-title">TOTAL USERS</div>
-                    <div class="stat-value" id="totalUsers">40</div>
-                </div>
-            </div>
-            <div class="stat-card active">
-                <div class="stat-icon">🟢</div>
-                <div class="stat-content">
-                    <div class="stat-title">ACTIVE USERS</div>
-                    <div class="stat-value" id="activeUsers">39</div>
-                </div>
-            </div>
-            <div class="stat-card inactive">
-                <div class="stat-icon">🔴</div>
-                <div class="stat-content">
-                    <div class="stat-title">INACTIVE USERS</div>
-                    <div class="stat-value" id="inactiveUsers">1</div>
-                </div>
-            </div>
-        </div>
+        <!-- Divider -->
+        <div class="divider"></div>
 
         <!-- Main Content -->
-        <div class="main-content">
-            <div class="form-section" id="formSection" style="display: none;">
-                <div class="form-header">
-                    <h2><i class="fas fa-user-edit"></i> User Form</h2>
-                    <button class="close-form" id="closeForm">
-                        <i class="fas fa-times"></i> Close
-                    </button>
+        <div class="compact-content">
+            <div class="search-container-small">
+                <div class="search-box-small">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search users...">
                 </div>
-                
-                <div class="form-group">
+            </div>
+
+            <div class="compact-users-list" id="usersList">
+                <div class="loading-small">
+                    <div class="loading-spinner-small"></div>
+                    <p>Loading users...</p>
+                </div>
+            </div>
+
+            <button class="btn-add-small" id="openForm">
+                <i class="fas fa-plus-circle"></i> Add New User
+            </button>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-small">
+            <p>OK VIP Users Management • Firebase</p>
+        </div>
+    </div>
+
+    <!-- Form Modal -->
+    <div class="form-overlay" id="formOverlay">
+        <div class="form-modal">
+            <div class="form-header-small">
+                <h3><i class="fas fa-user-edit"></i> User Form</h3>
+                <button class="btn-close" id="closeForm">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="form-body">
+                <div class="form-group-small">
                     <label for="token">Token *</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-key"></i>
-                        <input type="text" id="token" placeholder="Enter unique token">
-                    </div>
+                    <input type="text" id="token" class="form-input-small" placeholder="Enter token">
                 </div>
                 
-                <div class="form-group">
+                <div class="form-group-small">
                     <label for="username">Username</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-user"></i>
-                        <input type="text" id="username" placeholder="Enter username">
-                    </div>
+                    <input type="text" id="username" class="form-input-small" placeholder="Enter username">
                 </div>
                 
-                <div class="form-group">
+                <div class="form-group-small">
                     <label for="expiry">Expiry Date</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-calendar-alt"></i>
-                        <input type="text" id="expiry" placeholder="YYYY-MM-DD">
-                    </div>
+                    <input type="text" id="expiry" class="form-input-small" placeholder="YYYY-MM-DD">
                 </div>
                 
-                <div class="form-group">
-                    <div class="switch-group">
-                        <span class="switch-label">Active Status</span>
-                        <label class="switch">
+                <div class="form-group-small">
+                    <div class="switch-group-small">
+                        <span>Active Status</span>
+                        <label class="switch-small">
                             <input type="checkbox" id="isActive" checked>
-                            <span class="slider"></span>
+                            <span class="slider-small"></span>
                         </label>
                     </div>
                 </div>
                 
-                <div class="form-actions">
-                    <button class="btn btn-add" id="btnAdd">
+                <div class="form-actions-small">
+                    <button class="btn-form-small btn-add-form" id="btnAdd">
                         <i class="fas fa-plus"></i> Add
                     </button>
-                    <button class="btn btn-update" id="btnUpdate">
+                    <button class="btn-form-small btn-update-form" id="btnUpdate">
                         <i class="fas fa-sync"></i> Update
                     </button>
-                    <button class="btn btn-delete" id="btnDelete">
+                    <button class="btn-form-small btn-delete-form" id="btnDelete">
                         <i class="fas fa-trash"></i> Delete
                     </button>
                 </div>
             </div>
-
-            <div class="list-section">
-                <div class="search-container">
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="searchInput" placeholder="Search by token or username...">
-                    </div>
-                </div>
-                
-                <button class="btn btn-open-form" id="openForm">
-                    <i class="fas fa-plus-circle"></i> Open Form to Add New User
-                </button>
-                
-                <div class="users-list" id="usersList">
-                    <div class="loading">
-                        <div class="loading-spinner"></div>
-                        <p>Loading users...</p>
-                    </div>
-                </div>
-            </div>
         </div>
-
-        <div class="notification" id="notification"></div>
-
-        <footer>
-            <p>Firebase Users Management System • Built with Firebase Firestore</p>
-        </footer>
     </div>
+
+    <!-- Notification -->
+    <div class="notification-small" id="notification"></div>
 
     <script>
         // Firebase Configuration
@@ -775,7 +730,7 @@
         let currentEditToken = null;
 
         // DOM Elements
-        const formSection = document.getElementById('formSection');
+        const formOverlay = document.getElementById('formOverlay');
         const openFormBtn = document.getElementById('openForm');
         const closeFormBtn = document.getElementById('closeForm');
         const searchInput = document.getElementById('searchInput');
@@ -796,9 +751,43 @@
         const activeUsersEl = document.getElementById('activeUsers');
         const inactiveUsersEl = document.getElementById('inactiveUsers');
 
+        // Demo data (from your image)
+        const demoUsers = [
+            {
+                token: "AyeNyin",
+                username: "AyeNyin",
+                expiryDate: "2026-2-24",
+                isActive: true,
+                remainingDays: "38 days"
+            },
+            {
+                token: "root",
+                username: "root",
+                expiryDate: "2026-2-23",
+                isActive: true,
+                remainingDays: "37 days"
+            },
+            {
+                token: "min",
+                username: "min",
+                expiryDate: "2026.5.4",
+                isActive: true,
+                remainingDays: "Unknown"
+            },
+            {
+                token: "inactive_user",
+                username: "Unknown",
+                expiryDate: null,
+                isActive: false,
+                remainingDays: "Unknown"
+            }
+        ];
+
         // Event Listeners
         document.addEventListener('DOMContentLoaded', () => {
-            loadUsers();
+            // Set initial demo stats
+            updateCounters(4, 3, 1);
+            renderDemoUsers();
             
             openFormBtn.addEventListener('click', openForm);
             closeFormBtn.addEventListener('click', closeForm);
@@ -810,6 +799,9 @@
             // Set today's date as default for expiry
             const today = new Date().toISOString().split('T')[0];
             expiryInput.value = today;
+            
+            // Try to load real users
+            loadUsers();
         });
 
         // Load users from Firestore
@@ -836,12 +828,20 @@
                     }
                 });
                 
-                // Update counters with real data
-                updateCounters(allUsers.length, activeCount, inactiveCount);
-                renderUsers();
+                // If no real users, show demo
+                if (allUsers.length === 0) {
+                    updateCounters(4, 3, 1);
+                    renderDemoUsers();
+                } else {
+                    updateCounters(allUsers.length, activeCount, inactiveCount);
+                    renderUsers();
+                }
             }, (error) => {
                 console.error("Error loading users:", error);
-                showNotification("Error loading data: " + error.message, "error");
+                // On error, show demo data
+                updateCounters(4, 3, 1);
+                renderDemoUsers();
+                showNotification("⚠️ Using demo data", "info");
             });
         }
 
@@ -852,41 +852,83 @@
             inactiveUsersEl.textContent = inactive;
         }
 
-        // Render users to the list
+        // Render demo users (from your image)
+        function renderDemoUsers() {
+            usersList.innerHTML = demoUsers.map(user => `
+                <div class="user-item ${user.isActive ? 'active' : 'inactive'}" 
+                     data-token="${user.token}" 
+                     onclick="fillForm('${user.token}')">
+                    <div class="user-header-small">
+                        <div class="user-name">${user.username}</div>
+                        <div class="user-status-small ${user.isActive ? 'status-active-small' : 'status-inactive-small'}">
+                            ${user.isActive ? 'ACTIVE' : 'INACTIVE'}
+                        </div>
+                    </div>
+                    <div class="user-details-small">
+                        <div class="detail-row">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span class="detail-label">Expiry:</span>
+                            <span class="detail-value">${user.expiryDate || 'null'}</span>
+                        </div>
+                        <div class="detail-row">
+                            <i class="fas fa-clock"></i>
+                            <span class="detail-label">Remaining:</span>
+                            <span class="detail-value">${user.remainingDays}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render real users
         function renderUsers() {
             if (filteredUsers.length === 0) {
                 usersList.innerHTML = `
-                    <div class="empty-state">
+                    <div class="empty-state-small">
                         <i class="fas fa-users-slash"></i>
                         <h3>No Users Found</h3>
-                        <p>Add your first user using the form</p>
+                        <p>Add your first user</p>
                     </div>
                 `;
                 return;
             }
             
-            usersList.innerHTML = filteredUsers.map(user => `
-                <div class="user-card ${user.isActive ? 'active' : 'inactive'}" 
-                     data-token="${user.token}" 
-                     onclick="fillForm('${user.token}')">
-                    <div class="user-header">
-                        <div class="user-token">${user.token}</div>
-                        <div class="user-status ${user.isActive ? 'status-active' : 'status-inactive'}">
-                            ${user.isActive ? 'ACTIVE' : 'INACTIVE'}
+            usersList.innerHTML = filteredUsers.map(user => {
+                // Calculate remaining days
+                let remainingDays = "Unknown";
+                if (user.expiryDate) {
+                    const expiry = new Date(user.expiryDate);
+                    const today = new Date();
+                    const diffTime = expiry - today;
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    remainingDays = diffDays > 0 ? `${diffDays} days` : "Expired";
+                }
+                
+                return `
+                    <div class="user-item ${user.isActive ? 'active' : 'inactive'}" 
+                         data-token="${user.token}" 
+                         onclick="fillForm('${user.token}')">
+                        <div class="user-header-small">
+                            <div class="user-name">${user.username || user.token}</div>
+                            <div class="user-status-small ${user.isActive ? 'status-active-small' : 'status-inactive-small'}">
+                                ${user.isActive ? 'ACTIVE' : 'INACTIVE'}
+                            </div>
+                        </div>
+                        <div class="user-details-small">
+                            <div class="detail-row">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span class="detail-label">Expiry:</span>
+                                <span class="detail-value">${user.expiryDate || 'No date'}</span>
+                            </div>
+                            <div class="detail-row">
+                                <i class="fas fa-clock"></i>
+                                <span class="detail-label">Remaining:</span>
+                                <span class="detail-value">${remainingDays}</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="user-details">
-                        <div class="user-detail">
-                            <i class="fas fa-user"></i>
-                            <span>${user.username || 'No username'}</span>
-                        </div>
-                        <div class="user-detail">
-                            <i class="fas fa-calendar-alt"></i>
-                            <span>${user.expiryDate || 'No expiry date'}</span>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         // Filter users based on search input
@@ -894,29 +936,59 @@
             const keyword = searchInput.value.toLowerCase().trim();
             
             if (keyword === '') {
-                filteredUsers = [...allUsers];
+                if (allUsers.length > 0) {
+                    filteredUsers = [...allUsers];
+                    renderUsers();
+                } else {
+                    filteredUsers = [...demoUsers];
+                    renderDemoUsers();
+                }
             } else {
-                filteredUsers = allUsers.filter(user => 
+                const source = allUsers.length > 0 ? allUsers : demoUsers;
+                filteredUsers = source.filter(user => 
                     (user.token && user.token.toLowerCase().includes(keyword)) ||
                     (user.username && user.username.toLowerCase().includes(keyword))
                 );
+                
+                if (allUsers.length > 0) {
+                    renderUsers();
+                } else {
+                    usersList.innerHTML = filteredUsers.map(user => `
+                        <div class="user-item ${user.isActive ? 'active' : 'inactive'}" 
+                             data-token="${user.token}" 
+                             onclick="fillForm('${user.token}')">
+                            <div class="user-header-small">
+                                <div class="user-name">${user.username}</div>
+                                <div class="user-status-small ${user.isActive ? 'status-active-small' : 'status-inactive-small'}">
+                                    ${user.isActive ? 'ACTIVE' : 'INACTIVE'}
+                                </div>
+                            </div>
+                            <div class="user-details-small">
+                                <div class="detail-row">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span class="detail-label">Expiry:</span>
+                                    <span class="detail-value">${user.expiryDate || 'null'}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <i class="fas fa-clock"></i>
+                                    <span class="detail-label">Remaining:</span>
+                                    <span class="detail-value">${user.remainingDays}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                }
             }
-            
-            renderUsers();
         }
 
         // Form functions
         function openForm() {
-            formSection.style.display = 'block';
-            openFormBtn.style.display = 'none';
+            formOverlay.style.display = 'flex';
             clearForm();
-            // Smooth scroll to form
-            formSection.scrollIntoView({ behavior: 'smooth' });
         }
 
         function closeForm() {
-            formSection.style.display = 'none';
-            openFormBtn.style.display = 'block';
+            formOverlay.style.display = 'none';
             clearForm();
         }
 
@@ -931,7 +1003,16 @@
 
         // Fill form with user data for editing
         function fillForm(token) {
-            const user = allUsers.find(u => u.token === token);
+            let user;
+            
+            // Check in real users first
+            if (allUsers.length > 0) {
+                user = allUsers.find(u => u.token === token);
+            } else {
+                // Check in demo users
+                user = demoUsers.find(u => u.token === token);
+            }
+            
             if (!user) return;
             
             tokenInput.value = user.token;
@@ -941,11 +1022,7 @@
             isActiveInput.checked = user.isActive || false;
             currentEditToken = user.token;
             
-            formSection.style.display = 'block';
-            openFormBtn.style.display = 'none';
-            
-            // Smooth scroll to form
-            formSection.scrollIntoView({ behavior: 'smooth' });
+            formOverlay.style.display = 'flex';
         }
 
         // CRUD Operations
@@ -957,12 +1034,11 @@
             
             if (!token) {
                 showNotification("Token is required", "error");
-                tokenInput.focus();
                 return;
             }
             
             const user = {
-                username: username,
+                username: username || token,
                 expiryDate: expiryDate,
                 isActive: isActive
             };
@@ -1033,7 +1109,7 @@
                 <i class="${icon}"></i>
                 <span>${message}</span>
             `;
-            notification.className = `notification ${type} show`;
+            notification.className = `notification-small ${type} show`;
             
             setTimeout(() => {
                 notification.classList.remove('show');
